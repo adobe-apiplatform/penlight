@@ -29,10 +29,6 @@ local function assert_dir (n,val)
     assert_arg(n,val,'string',path.isdir,'not a directory',4)
 end
 
-local function assert_file (n,val)
-    assert_arg(n,val,'string',path.isfile,'not a file',4)
-end
-
 local function filemask(mask)
     mask = utils.escape(path.normcase(mask))
     return '^'..mask:gsub('%%%*','.*'):gsub('%%%?','.')..'$'
@@ -448,11 +444,11 @@ function dir.dirtree( d )
 end
 
 
----	Recursively returns all the file starting at _path_. It can optionally take a shell pattern and
---	only returns files that match _pattern_. If a pattern is given it will do a case insensitive search.
---	@string start_path  A directory. If not given, all files in current directory are returned.
---	@string pattern A shell pattern. If not given, all files are returned.
---	@treturn List(string) containing all the files found recursively starting at _path_ and filtered by _pattern_.
+--- Recursively returns all the file starting at _path_. It can optionally take a shell pattern and
+-- only returns files that match _pattern_. If a pattern is given it will do a case insensitive search.
+-- @string start_path  A directory. If not given, all files in current directory are returned.
+-- @string pattern A shell pattern. If not given, all files are returned.
+-- @treturn List(string) containing all the files found recursively starting at _path_ and filtered by _pattern_.
 -- @raise start_path must be a directory
 function dir.getallfiles( start_path, pattern )
     assert_dir(1,start_path)

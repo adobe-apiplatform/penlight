@@ -4,10 +4,10 @@
 -- Dependencies: `pl.utils`, `pl.types`, `debug`
 -- @module pl.seq
 
-local next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G = next,assert,type,pairs,tonumber,type,setmetatable,getmetatable,_G
-local strfind,strmatch,format = string.find,string.match,string.format
+local next,assert,pairs,tonumber,type,setmetatable = next,assert,pairs,tonumber,type,setmetatable
+local strfind,format = string.find,string.format
 local mrandom = math.random
-local remove,tsort,tappend = table.remove,table.sort,table.insert
+local tsort,tappend = table.sort,table.insert
 local io = io
 local utils = require 'pl.utils'
 local callable = require 'pl.types'.is_callable
@@ -500,13 +500,19 @@ SMT = {
 }
 
 setmetatable(seq,{
-    __call = function(tbl,iter)
+    __call = function(tbl,iter,extra)
         if not callable(iter) then
             if type(iter) == 'table' then iter = seq.list(iter)
             else return iter
             end
         end
-        return setmetatable({iter=iter},SMT)
+        if extra then
+            return setmetatable({iter=function()
+                return iter(extra)
+            end},SMT)
+        else
+            return setmetatable({iter=iter},SMT)
+        end
     end
 })
 
@@ -535,7 +541,7 @@ function seq.lines (f,...)
 end
 
 function seq.import ()
-    _G.debug.setmetatable(function() end,{
+    debug.setmetatable(function() end,{
         __index = function(tbl,key)
             local s = overrides[key] or seq[key]
             if s then return s
