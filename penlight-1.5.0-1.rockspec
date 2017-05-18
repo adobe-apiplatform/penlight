@@ -1,9 +1,18 @@
-package = "penlight"
-version = "1.4.1-2"
+-- This file was automatically generated for the LuaDist project.
 
+package = "penlight"
+version = "1.5.0-1"
+
+-- LuaDist source
 source = {
   url = "git://github.com/LuaDist2/penlight.git",
+  tag = "1.5.0-1"
 }
+-- Original source
+-- source = {
+--   url = "http://stevedonovan.github.io/files/penlight-1.5.0.zip",
+--   dir = "penlight-1.5.0"
+-- }
 
 description = {
   summary = "Lua utility libraries loosely based on the Python standard libraries",
@@ -18,18 +27,18 @@ on tables and sequences.
 }
 
 dependencies = {
-  "luafilesystem"
+  "luafilesystem",
 }
 
 build = {
   type = "builtin",
   modules = {
-    ["pl"] = "lua/pl/init.lua",
     ["pl.strict"] = "lua/pl/strict.lua",
     ["pl.dir"] = "lua/pl/dir.lua",
     ["pl.operator"] = "lua/pl/operator.lua",
     ["pl.input"] = "lua/pl/input.lua",
     ["pl.config"] = "lua/pl/config.lua",
+    ["pl.compat"] = "lua/pl/config.lua",
     ["pl.seq"] = "lua/pl/seq.lua",
     ["pl.stringio"] = "lua/pl/stringio.lua",
     ["pl.text"] = "lua/pl/text.lua",
@@ -39,7 +48,6 @@ build = {
     ["pl.stringx"] = "lua/pl/stringx.lua",
     ["pl.lexer"] = "lua/pl/lexer.lua",
     ["pl.utils"] = "lua/pl/utils.lua",
-    ["pl.compat"] = "lua/pl/compat.lua",
     ["pl.sip"] = "lua/pl/sip.lua",
     ["pl.permute"] = "lua/pl/permute.lua",
     ["pl.pretty"] = "lua/pl/pretty.lua",
@@ -47,6 +55,7 @@ build = {
     ["pl.List"] = "lua/pl/List.lua",
     ["pl.data"] = "lua/pl/data.lua",
     ["pl.Date"] = "lua/pl/Date.lua",
+    ["pl.init"] = "lua/pl/init.lua",
     ["pl.luabalanced"] = "lua/pl/luabalanced.lua",
     ["pl.comprehension"] = "lua/pl/comprehension.lua",
     ["pl.path"] = "lua/pl/path.lua",
@@ -61,8 +70,7 @@ build = {
     ["pl.Set"] = "lua/pl/Set.lua",
     ["pl.xml"] = "lua/pl/xml.lua",
     ["pl.url"] = "lua/pl/url.lua",
+    ["pl.import_into"] = "lua/pl/import_into.lua",
     ["pl.types"] = "lua/pl/types.lua",
-    ["pl.import_into"] = "lua/pl/import_into.lua"
   },
-  copy_directories = {"doc", "tests"}
 }

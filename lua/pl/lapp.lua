@@ -11,8 +11,8 @@
 --
 --      print(args.offset + args.scale * args.number)
 --
--- Lines begining with '-' are flags; there may be a short and a long name;
--- lines begining wih '<var>' are arguments.  Anything in parens after
+-- Lines beginning with `'-'` are flags; there may be a short and a long name;
+-- lines beginning with `'<var>'` are arguments.  Anything in parens after
 -- the flag/argument is either a default, a type name or a range constraint.
 --
 -- See @{08-additional.md.Command_line_Programs_with_Lapp|the Guide}
@@ -159,6 +159,18 @@ local function process_default (sval,vtype)
             return true, 'boolean'
         end
         if sval:match '^["\']' then sval = sval:sub(2,-2) end
+
+        local ps = types[vtype] or {}
+        ps.type = vtype
+
+        local show_usage_error = lapp.show_usage_error
+        lapp.show_usage_error = "throw"
+        success, val = pcall(convert_parameter, ps, sval)
+        lapp.show_usage_error = show_usage_error
+        if success then
+          return val, vtype
+        end
+
         return sval,vtype or 'string'
     end
 end
@@ -198,6 +210,13 @@ function lapp.process_options_string(str,args)
 
     usage = str
 
+    for _,a in ipairs(arg) do
+      if a == "-h" or a == "--help" then
+        return lapp.quit()
+      end
+    end
+
+
     for line in lines(str) do
         local res = {}
         local optspec,optparm,i1,i2,defval,vtype,constraint,rest
@@ -210,6 +229,7 @@ function lapp.process_options_string(str,args)
         if check '-$v{short}, --$o{long} $' or check '-$v{short} $' or check '--$o{long} $' then
             if res.long then
                 optparm = res.long:gsub('[^%w%-]','_')  -- I'm not sure the $o pattern will let anything else through?
+                if #res.rest == 1 then optparm = optparm .. res.rest end
                 if res.short then aliases[res.short] = optparm  end
             else
                 optparm = res.short
